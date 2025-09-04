@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>myInternCoach</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen font-['Inter'] text-slate-200 premium-bg">
+  <div class="container mx-auto px-4 py-10">
+    <div class="glass-panel glow-border rounded-3xl p-6 md:p-10 shadow-2xl">
+      <header class="mb-10 text-center relative">
+        <div class="mx-auto mb-4 flex items-center justify-center gap-3">
+          <img src="myinterncoachlogo.png" alt="myInternCoach logo" class="h-14 w-auto mx-auto rounded-xl shadow" />
+        </div>
+        <h1 class="text-5xl font-extrabold tracking-tight mb-3 gradient-text">myInternCoach</h1>
+        <p class="text-slate-300/90 text-xl leading-relaxed">Track all your applications in one place</p>
+
+        <button id="settingsButton" class="absolute top-0 right-0 mt-2 mr-4 bg-slate-700 text-slate-200 rounded-full p-2 shadow hover:bg-slate-600 transition-all" aria-label="Open settings">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Tabs -->
+      <div class="mb-8">
+        <div class="border-b border-slate-700/40 backdrop-blur">
+          <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <button id="dashboardTab" class="tab-button active py-2 px-1 border-b-2 border-indigo-500 text-indigo-400 font-medium text-sm transition-all duration-200 hover:text-indigo-300 hover:border-indigo-400">
+              <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+              </svg>
+              Dashboard
+            </button>
+            <button id="applicationsTab" class="tab-button py-2 px-1 border-b-2 border-transparent text-slate-400 font-medium text-sm transition-all duration-200 hover:text-slate-300 hover:border-slate-300">
+              <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              Applications
+            </button>
+            <button id="analyticsTab" class="tab-button py-2 px-1 border-b-2 border-transparent text-slate-400 font-medium text-sm transition-all duration-200 hover:text-slate-300 hover:border-slate-300">
+              <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              Analytics
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <div id="dashboardContent" class="tab-content active">
+        <!-- Add New Application (TOP) -->
+        <div class="form-container rounded-2xl shadow-xl p-6 bg-slate-800/50 border border-slate-700/50 mb-8">
+          <h2 class="text-xl font-semibold text-slate-200 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Add New Application
+          </h2>
+
+          <form id="dashboardInternshipForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label for="dashboardCompany" class="block text-sm font-medium text-slate-300">Company</label>
+                <input type="text" id="dashboardCompany" name="company" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+              </div>
+              <div class="space-y-2">
+                <label for="dashboardRole" class="block text-sm font-medium text-slate-300">Role</label>
+                <input type="text" id="dashboardRole" name="role" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+              </div>
+              <div class="space-y-2">
+                <label for="dashboardPlatform" class="block text-sm font-medium text-slate-300">Platform</label>
+                <select id="dashboardPlatform" name="platform" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Handshake">Handshake</option>
+                  <option value="Indeed">Indeed</option>
+                  <option value="Company Site">Company Site</option>
+                  <option value="Email">Email</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label for="dashboardLocation" class="block text-sm font-medium text-slate-300">Location</label>
+                <input type="text" id="dashboardLocation" name="location" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+              </div>
+              <div class="space-y-2">
+                <label for="dashboardStatus" class="block text-sm font-medium text-slate-300">Status</label>
+                <select id="dashboardStatus" name="status" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+                  <option value="Applied">Applied</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Offer">Offer</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label for="dashboardDeadline" class="block text-sm font-medium text-slate-300">Date Applied</label>
+                <input type="date" id="dashboardDeadline" name="deadline" required class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="dashboardNotes" class="block text-sm font-medium text-slate-300">Notes</label>
+              <textarea id="dashboardNotes" name="notes" rows="2" class="mt-1 block w-full rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200"></textarea>
+            </div>
+
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Application
+            </button>
+          </form>
+        </div>
+
+        <!-- Two-column area: Progress + Stats (left) and Recent (right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- LEFT: Progress + Stats stacked with consistent spacing -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Progress -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Application Progress</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between text-sm text-slate-400">
+                  <span>Applied</span>
+                  <span id="appliedCount">0</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-2">
+                  <div id="appliedProgress" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+
+                <div class="flex justify-between text-sm text-slate-400">
+                  <span>Interview</span>
+                  <span id="interviewCount">0</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-2">
+                  <div id="interviewProgress" class="bg-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+
+                <div class="flex justify-between text-sm text-slate-400">
+                  <span>Offer</span>
+                  <span id="offerCount">0</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-2">
+                  <div id="offerProgress" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+                <h3 class="text-sm font-medium text-slate-400 mb-2">Total Applications</h3>
+                <p class="text-3xl font-bold text-indigo-400" id="totalApplications">0</p>
+              </div>
+              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+                <h3 class="text-sm font-medium text-slate-400 mb-2">Interview Rate</h3>
+                <p class="text-3xl font-bold text-emerald-400" id="interviewRate">0%</p>
+              </div>
+              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+                <h3 class="text-sm font-medium text-slate-400 mb-2">Offer Rate</h3>
+                <p class="text-3xl font-bold text-blue-400" id="offerRate">0%</p>
+              </div>
+              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+                <h3 class="text-sm font-medium text-slate-400 mb-2">Avg. Response Time</h3>
+                <p class="text-3xl font-bold text-purple-400" id="avgResponseTime">0 days</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Recent Applications -->
+          <div class="lg:col-span-1">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Recent Applications</h3>
+              <div id="recentApplications" class="space-y-3">
+                <!-- Recent applications will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications (NO add form here) -->
+      <div id="applicationsContent" class="tab-content hidden">
+        <!-- Search -->
+        <div class="mb-6">
+          <div class="relative max-w-md">
+            <input type="text" id="searchInput" placeholder="Search applications..." class="w-full pl-10 pr-4 py-2 bg-slate-700 text-slate-200 rounded-lg border border-slate-600 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none">
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- List -->
+        <div class="list-container w-full max-w-7xl mx-auto p-8 rounded-2xl shadow-xl">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-semibold text-slate-200 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              Your Applications
+            </h2>
+            <button id="exportCsv" class="px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+              Export to CSV
+            </button>
+          </div>
+
+          <div id="internshipsList" class="gap-6"><!-- Cards go here --></div>
+
+          <div id="emptyState" class="hidden text-center py-12">
+            <svg class="w-16 h-16 mx-auto text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <p class="text-slate-400 text-lg">No internship applications yet. Add your first one from the dashboard!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics -->
+      <div id="analyticsContent" class="tab-content hidden">
+        <div class="analytics-container rounded-2xl shadow-xl p-8 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50">
+          <h2 class="text-2xl font-semibold text-slate-200 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            Application Analytics
+          </h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Application Status Distribution</h3>
+              <canvas id="statusChart"></canvas>
+            </div>
+            <div class="chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Applications Over Time</h3>
+              <canvas id="timelineChart"></canvas>
+            </div>
+          </div>
+
+          <div class="mt-8 chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+            <h3 class="text-lg font-medium text-slate-200 mb-4">Success Rate by Platform</h3>
+            <div id="platformSuccessList" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-slate-800 rounded-xl p-6 w-full max-w-md mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-slate-200">Settings</h2>
+        <button id="closeSettings" class="text-slate-400 hover:text-slate-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <h3 class="text-lg font-medium text-slate-200">Theme</h3>
+          <div class="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg border border-slate-700/50">
+            <span class="text-slate-200">Dark Mode</span>
+            <button id="themeToggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800">
+              <span id="themeIcon" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform">
+                <svg id="themeIconPath" class="h-4 w-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-lg font-medium text-slate-200">Data Management</h3>
+          <div class="grid grid-cols-3 gap-2">
+            <button id="exportData" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 text-sm">Export CSV</button>
+            <button id="exportJSON" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 text-sm">Export JSON</button>
+            <button id="importJSON" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 text-sm">Import JSON</button>
+          </div>
+          <button id="clearData" class="w-full mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200">Clear All Data</button>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-lg font-medium text-slate-200">Keyboard Shortcuts</h3>
+          <div class="space-y-2 text-sm text-slate-400">
+            <div class="flex justify-between"><span>Search applications</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘K</kbd></div>
+            <div class="flex justify-between"><span>New application</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘N</kbd></div>
+            <div class="flex justify-between"><span>Open settings</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘S</kbd></div>
+            <div class="flex justify-between"><span>Close modal</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">Esc</kbd></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
