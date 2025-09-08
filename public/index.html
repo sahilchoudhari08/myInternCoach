@@ -13,9 +13,7 @@
   <div class="container mx-auto px-4 py-10">
     <div class="glass-panel glow-border rounded-3xl p-6 md:p-10 shadow-2xl">
       <header class="mb-10 text-center relative">
-        <div class="mx-auto mb-4 flex items-center justify-center gap-3">
-          <img src="myinterncoachlogo.png" alt="myInternCoach logo" class="h-14 w-auto mx-auto rounded-xl shadow" />
-        </div>
+        
         <h1 class="text-5xl font-extrabold tracking-tight mb-3 gradient-text">myInternCoach</h1>
         <p class="text-slate-300/90 text-xl leading-relaxed">Track all your applications in one place</p>
 
@@ -119,69 +117,35 @@
           </form>
         </div>
 
-        <!-- Two-column area: Progress + Stats (left) and Recent (right) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <!-- LEFT: Progress + Stats stacked with consistent spacing -->
-          <div class="lg:col-span-2 space-y-6">
-            <!-- Progress -->
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-              <h3 class="text-lg font-medium text-slate-200 mb-4">Application Progress</h3>
-              <div class="space-y-3">
-                <div class="flex justify-between text-sm text-slate-400">
-                  <span>Applied</span>
-                  <span id="appliedCount">0</span>
-                </div>
-                <div class="w-full bg-slate-700 rounded-full h-2">
-                  <div id="appliedProgress" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-
-                <div class="flex justify-between text-sm text-slate-400">
-                  <span>Interview</span>
-                  <span id="interviewCount">0</span>
-                </div>
-                <div class="w-full bg-slate-700 rounded-full h-2">
-                  <div id="interviewProgress" class="bg-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-
-                <div class="flex justify-between text-sm text-slate-400">
-                  <span>Offer</span>
-                  <span id="offerCount">0</span>
-                </div>
-                <div class="w-full bg-slate-700 rounded-full h-2">
-                  <div id="offerProgress" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-                <h3 class="text-sm font-medium text-slate-400 mb-2">Total Applications</h3>
-                <p class="text-3xl font-bold text-indigo-400" id="totalApplications">0</p>
-              </div>
-              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-                <h3 class="text-sm font-medium text-slate-400 mb-2">Interview Rate</h3>
-                <p class="text-3xl font-bold text-emerald-400" id="interviewRate">0%</p>
-              </div>
-              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-                <h3 class="text-sm font-medium text-slate-400 mb-2">Offer Rate</h3>
-                <p class="text-3xl font-bold text-blue-400" id="offerRate">0%</p>
-              </div>
-              <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-                <h3 class="text-sm font-medium text-slate-400 mb-2">Avg. Response Time</h3>
-                <p class="text-3xl font-bold text-purple-400" id="avgResponseTime">0 days</p>
-              </div>
-            </div>
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+            <div class="text-sm text-slate-400">Total Applications</div>
+            <div id="dashTotal" class="text-2xl font-bold text-indigo-400">0</div>
           </div>
+          <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+            <div class="text-sm text-slate-400">This Week</div>
+            <div id="dashThisWeek" class="text-2xl font-bold text-emerald-400">0</div>
+          </div>
+        </div>
 
-          <!-- RIGHT: Recent Applications -->
-          <div class="lg:col-span-1">
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-              <h3 class="text-lg font-medium text-slate-200 mb-4">Recent Applications</h3>
-              <div id="recentApplications" class="space-y-3">
-                <!-- Recent applications will be populated here -->
-              </div>
-            </div>
+        <!-- Weekly Goal Tracker -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 mb-8">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-medium text-slate-200">Weekly Goal</h3>
+            <button id="openGoalSettings" class="text-xs text-indigo-400 hover:text-indigo-300">Edit goal</button>
+          </div>
+          <div class="w-full bg-slate-700 rounded-full h-2">
+            <div id="weeklyGoalProgress" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <div id="weeklyGoalText" class="mt-2 text-sm text-slate-400">0 / 5 applications this week</div>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+          <h3 class="text-lg font-medium text-slate-200 mb-4">Recent Applications</h3>
+          <div id="recentApplications" class="space-y-3">
+            <!-- Recent applications will be populated here -->
           </div>
         </div>
       </div>
@@ -191,7 +155,7 @@
         <!-- Search -->
         <div class="mb-6">
           <div class="relative max-w-md">
-            <input type="text" id="searchInput" placeholder="Search applications..." class="w-full pl-10 pr-4 py-2 bg-slate-700 text-slate-200 rounded-lg border border-slate-600 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none">
+            <input type="text" id="searchInput" placeholder="Search by company name..." class="w-full pl-10 pr-4 py-2 bg-slate-700 text-slate-200 rounded-lg border border-slate-600 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none">
             <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
@@ -236,6 +200,56 @@
             Application Analytics
           </h2>
 
+          <!-- Moved: Application Progress -->
+          <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 mb-6">
+            <h3 class="text-lg font-medium text-slate-200 mb-4">Application Progress</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between text-sm text-slate-400">
+                <span>Applied</span>
+                <span id="appliedCount">0</span>
+              </div>
+              <div class="w-full bg-slate-700 rounded-full h-2">
+                <div id="appliedProgress" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+
+              <div class="flex justify-between text-sm text-slate-400">
+                <span>Interview</span>
+                <span id="interviewCount">0</span>
+              </div>
+              <div class="w-full bg-slate-700 rounded-full h-2">
+                <div id="interviewProgress" class="bg-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+
+              <div class="flex justify-between text-sm text-slate-400">
+                <span>Offer</span>
+                <span id="offerCount">0</span>
+              </div>
+              <div class="w-full bg-slate-700 rounded-full h-2">
+                <div id="offerProgress" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Moved: Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-sm font-medium text-slate-400 mb-2">Total Applications</h3>
+              <p class="text-3xl font-bold text-indigo-400" id="totalApplications">0</p>
+            </div>
+            <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-sm font-medium text-slate-400 mb-2">Interview Rate</h3>
+              <p class="text-3xl font-bold text-emerald-400" id="interviewRate">0%</p>
+            </div>
+            <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-sm font-medium text-slate-400 mb-2">Offer Rate</h3>
+              <p class="text-3xl font-bold text-blue-400" id="offerRate">0%</p>
+            </div>
+            <div class="stat-card bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-sm font-medium text-slate-400 mb-2">Avg. Response Time</h3>
+              <p class="text-3xl font-bold text-purple-400" id="avgResponseTime">0 days</p>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
               <h3 class="text-lg font-medium text-slate-200 mb-4">Application Status Distribution</h3>
@@ -247,9 +261,15 @@
             </div>
           </div>
 
-          <div class="mt-8 chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
-            <h3 class="text-lg font-medium text-slate-200 mb-4">Success Rate by Platform</h3>
-            <div id="platformSuccessList" class="space-y-2"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+            <div class="chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Applications by Platform</h3>
+              <div id="platformList" class="space-y-2"></div>
+            </div>
+            <div class="chart-container bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+              <h3 class="text-lg font-medium text-slate-200 mb-4">Success Rate by Platform</h3>
+              <div id="platformSuccessList" class="space-y-2"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -296,10 +316,19 @@
         <div class="space-y-2">
           <h3 class="text-lg font-medium text-slate-200">Keyboard Shortcuts</h3>
           <div class="space-y-2 text-sm text-slate-400">
-            <div class="flex justify-between"><span>Search applications</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘K</kbd></div>
+            <div class="flex justify-between"><span>Search by company</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘K</kbd></div>
             <div class="flex justify-between"><span>New application</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘N</kbd></div>
             <div class="flex justify-between"><span>Open settings</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘S</kbd></div>
             <div class="flex justify-between"><span>Close modal</span><kbd class="px-2 py-1 bg-slate-700 rounded text-xs">Esc</kbd></div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-lg font-medium text-slate-200">Productivity</h3>
+            <label for="weeklyGoalInput" class="text-sm text-slate-400">Weekly application goal</label>
+            <div class="flex items-center gap-2">
+              <input id="weeklyGoalInput" type="number" min="1" class="mt-1 block w-32 rounded-lg border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-700 text-slate-200" value="5">
+              <button id="saveWeeklyGoal" class="px-3 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800">Save</button>
+            </div>
           </div>
         </div>
       </div>
