@@ -16,7 +16,6 @@ const dashboardNotes = document.getElementById('dashboardNotes');
 const API_URL = '/api/internships';
 
 // Analytics functions
-let statusChart = null;
 let timelineChart = null;
 let platformSuccessChart = null;
 let lastUpdate = 0;
@@ -247,6 +246,34 @@ function initializeEventListeners() {
             filterInternships(searchTerm);
         });
     }
+    
+    // Goal settings functionality
+    // Open settings when clicking Edit goal
+    document.addEventListener('click', (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest('#openGoalSettings') : null;
+        if (!btn) return;
+        settingsModal.classList.remove('hidden');
+        settingsModal.classList.add('flex');
+        const weeklyGoalInput = document.getElementById('weeklyGoalInput');
+        if (weeklyGoalInput) {
+            weeklyGoalInput.value = localStorage.getItem('weeklyGoal') || '5';
+        }
+    });
+
+    // Save weekly goal
+    const saveWeeklyGoal = document.getElementById('saveWeeklyGoal');
+    const weeklyGoalInput = document.getElementById('weeklyGoalInput');
+    if (saveWeeklyGoal && weeklyGoalInput) {
+        saveWeeklyGoal.addEventListener('click', () => {
+            const val = Math.max(1, parseInt(weeklyGoalInput.value || '5', 10));
+            localStorage.setItem('weeklyGoal', String(val));
+            showNotification('Weekly goal saved', 'success');
+            settingsModal.classList.add('hidden');
+            settingsModal.classList.remove('flex');
+            // Refresh data to reflect new goal
+            fetchInternships();
+        });
+    }
 }
 
 // Notification system
@@ -326,12 +353,44 @@ function updateAnalytics(internships) {
 
     // Update stats immediately
     updateStats(internships);
+    updateDashboardStats(internships);
     
     // Debounce chart updates
     requestAnimationFrame(() => {
         updateCharts(internships);
     });
 }
+function getWeekStart(date = new Date()) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday as first day
+    d.setHours(0,0,0,0);
+    return new Date(d.setDate(diff));
+}
+
+function updateDashboardStats(internships) {
+    const total = internships.length;
+    const interviews = internships.filter(i => i.status === 'Interview').length;
+    const offers = internships.filter(i => i.status === 'Offer').length;
+
+    const weekStart = getWeekStart();
+    const thisWeek = internships.filter(i => new Date(i.createdAt || i.deadline) >= weekStart).length;
+
+    const dashTotal = document.getElementById('dashTotal');
+    const dashThisWeek = document.getElementById('dashThisWeek');
+    const weeklyGoalProgress = document.getElementById('weeklyGoalProgress');
+    const weeklyGoalText = document.getElementById('weeklyGoalText');
+
+    if (dashTotal) dashTotal.textContent = total;
+    if (dashThisWeek) dashThisWeek.textContent = thisWeek;
+    // Cards removed: Interviews and Offers
+
+    const goal = parseInt(localStorage.getItem('weeklyGoal') || '5', 10);
+    const pct = goal > 0 ? Math.min(100, Math.round((thisWeek / goal) * 100)) : 0;
+    if (weeklyGoalProgress) weeklyGoalProgress.style.width = `${pct}%`;
+    if (weeklyGoalText) weeklyGoalText.textContent = `${thisWeek} / ${goal} applications this week`;
+}
+
 
 function updateStats(internships) {
     const total = internships.length;
@@ -395,12 +454,19 @@ function updateAdditionalStats(internships) {
 }
 
 function updateCharts(internships) {
-    if (!document.getElementById('statusChart') || !document.getElementById('timelineChart')) {
+    if (!document.getElementById('statusChart') && !document.getElementById('timelineChart') && !document.getElementById('platformList')) {
         return; // Don't update if charts aren't in view
     }
 
-    updateStatusChart(internships);
-    updateTimelineChart(internships);
+    if (document.getElementById('statusChart')) {
+        updateStatusChart(internships);
+    }
+    if (document.getElementById('timelineChart')) {
+        updateTimelineChart(internships);
+    }
+    if (document.getElementById('platformList')) {
+        updatePlatformList(internships);
+    }
     updatePlatformSuccessList(internships);
 }
 
@@ -427,9 +493,8 @@ function updateStatusChart(internships) {
     };
     internships.forEach(i => statusCounts[i.status]++);
     const ctx = document.getElementById('statusChart').getContext('2d');
-    if (statusChart) statusChart.destroy();
     const chartColors = getChartColors();
-    statusChart = new Chart(ctx, {
+    const localChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: Object.keys(statusCounts),
@@ -557,6 +622,35 @@ function updateTimelineChart(internships) {
             .join('<br>');
 }
 
+function updatePlatformList(internships) {
+    const allPlatforms = ['LinkedIn', 'Handshake', 'Indeed', 'Company Site', 'Email', 'Other'];
+    const platformCounts = {};
+    internships.forEach(i => {
+        const platform = i.platform || 'Other';
+        platformCounts[platform] = (platformCounts[platform] || 0) + 1;
+    });
+    
+    const listDiv = document.getElementById('platformList');
+    listDiv.innerHTML = '';
+    
+    allPlatforms.forEach(platform => {
+        const count = platformCounts[platform] || 0;
+        const color = {
+            'LinkedIn': 'text-indigo-400',
+            'Handshake': 'text-amber-400',
+            'Indeed': 'text-emerald-400',
+            'Company Site': 'text-blue-400',
+            'Email': 'text-purple-400',
+            'Other': 'text-red-400'
+        }[platform] || 'text-slate-300';
+        
+        listDiv.innerHTML += `<div class="flex items-center justify-between bg-slate-800/50 rounded-lg px-4 py-2 border border-slate-700/50">
+            <span class="font-medium ${color}">${platform}</span>
+            <span class="font-semibold text-slate-200">${count} application${count === 1 ? '' : 's'}</span>
+        </div>`;
+    });
+}
+
 function updatePlatformSuccessList(internships) {
     const allPlatforms = ['LinkedIn', 'Handshake', 'Indeed', 'Company Site', 'Email', 'Other'];
     const platformCounts = {};
@@ -588,15 +682,7 @@ function updatePlatformSuccessList(internships) {
 }
 
 // Helper function to get consistent colors for statuses
-function getStatusColor(status, alpha = 1) {
-    const colors = {
-        Applied: `rgba(99, 102, 241, ${alpha})`,    // Indigo
-        Interview: `rgba(245, 158, 11, ${alpha})`,   // Amber
-        Offer: `rgba(16, 185, 129, ${alpha})`,       // Emerald
-        Rejected: `rgba(239, 68, 68, ${alpha})`      // Red
-    };
-    return colors[status] || `rgba(99, 102, 241, ${alpha})`;
-}
+// Removed unused status color helper
 
 // Fetch all internships
 async function fetchInternships() {
@@ -649,50 +735,7 @@ function displayInternships(internships) {
     });
     internshipsList.appendChild(cardsSection);
 
-    // Create status categories section in a separate container
-    const statusCategoriesContainer = document.createElement('div');
-    statusCategoriesContainer.className = 'mt-12';
-    statusCategoriesContainer.innerHTML = `
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-            <h2 class="text-2xl font-bold text-slate-200 mb-6">Applications by Status</h2>
-            <div class="space-y-6">
-                ${Object.entries({
-                    Applied: { color: 'indigo', icon: '📝' },
-                    Interview: { color: 'amber', icon: '🎯' },
-                    Offer: { color: 'emerald', icon: '✨' },
-                    Rejected: { color: 'red', icon: '❌' }
-                }).map(([status, { color, icon }]) => {
-                    const companies = internships
-                        .filter(i => i.status === status)
-                        .map(i => i.company);
-
-                    if (companies.length === 0) return '';
-
-                    return `
-                        <div class="bg-slate-900/50 rounded-xl p-6 border border-slate-700/50 w-full">
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="text-2xl">${icon}</span>
-                                <h3 class="text-xl font-semibold text-slate-200">${status}</h3>
-                                <span class="px-3 py-1 rounded-full text-sm font-medium bg-${color}-500/20 text-${color}-400">
-                                    ${companies.length} ${companies.length === 1 ? 'company' : 'companies'}
-                                </span>
-                            </div>
-                            <div class="flex flex-row flex-wrap gap-3 justify-start w-full">
-                                ${companies.map(company => `
-                                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                                        <p class="text-slate-200">${company}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-        </div>
-    `;
-
-    // Insert the status categories section after the internships list
-    internshipsList.parentNode.insertBefore(statusCategoriesContainer, internshipsList.nextSibling);
+    // Removed "Applications by Status" categories per request
 
     // Update recent applications in dashboard
     updateRecentApplications(internships);
@@ -703,17 +746,19 @@ function updateRecentApplications(internships) {
     const recentApplicationsContainer = document.getElementById('recentApplications');
     if (!recentApplicationsContainer) return;
 
-    // Get the 5 most recent applications
-    const recent = internships
-        .sort((a, b) => new Date(b.createdAt || b.deadline) - new Date(a.createdAt || a.deadline))
-        .slice(0, 5);
+    // Sort applications by most recent first
+    const sorted = [...internships]
+        .sort((a, b) => new Date(b.createdAt || b.deadline) - new Date(a.createdAt || a.deadline));
 
-    if (recent.length === 0) {
+    if (sorted.length === 0) {
         recentApplicationsContainer.innerHTML = '<p class="text-slate-400 text-sm">No applications yet</p>';
         return;
     }
 
-    recentApplicationsContainer.innerHTML = recent.map(internship => `
+    const topTwo = sorted.slice(0, 2);
+    const rest = sorted.slice(2);
+
+    const renderItem = (internship) => `
         <div class="recent-application-item">
             <div class="flex justify-between items-start mb-2">
                 <div class="font-medium text-slate-200">${internship.company}</div>
@@ -725,8 +770,34 @@ function updateRecentApplications(internships) {
             <div class="text-xs text-slate-500 mt-1">
                 Applied: ${new Date(internship.deadline).toLocaleDateString()}
             </div>
-        </div>
-    `).join('');
+        </div>`;
+
+    let html = topTwo.map(renderItem).join('');
+    if (rest.length > 0) {
+        html += `
+            <button id="recentToggle" class="text-xs text-indigo-400 hover:text-indigo-300 mt-2">Show more</button>
+            <div id="recentRest" class="hidden mt-2">
+                ${rest.map(renderItem).join('')}
+            </div>
+        `;
+    }
+
+    recentApplicationsContainer.innerHTML = html;
+
+    const toggleBtn = document.getElementById('recentToggle');
+    const restDiv = document.getElementById('recentRest');
+    if (toggleBtn && restDiv) {
+        toggleBtn.addEventListener('click', () => {
+            const isHidden = restDiv.classList.contains('hidden');
+            if (isHidden) {
+                restDiv.classList.remove('hidden');
+                toggleBtn.textContent = 'Show less';
+            } else {
+                restDiv.classList.add('hidden');
+                toggleBtn.textContent = 'Show more';
+            }
+        });
+    }
 }
 
 // Create an internship card element
@@ -740,10 +811,10 @@ function createInternshipCard(internship) {
     card.innerHTML = `
         <div class="flex flex-wrap justify-between items-start gap-y-2 mb-4">
             <div>
-                <h3 class="text-xl font-semibold text-slate-200 mb-1">${internship.company}</h3>
-                <p class="text-slate-400">${internship.role}</p>
+                <h3 class="text-xl font-semibold text-slate-200 mb-1 company-name">${internship.company}</h3>
+                <p class="text-slate-400 role-title">${internship.role}</p>
                 <p class="text-xs text-slate-500 mt-1">Platform: <span class="font-semibold">${internship.platform || 'N/A'}</span></p>
-                <p class="text-xs text-slate-500 mt-1">Location: <span class="font-semibold">${internship.location || 'N/A'}</span></p>
+                <p class="text-xs text-slate-500 mt-1">Location: <span class="font-semibold location-text">${internship.location || 'N/A'}</span></p>
             </div>
             <span class="status-badge status-${internship.status.toLowerCase()}">${internship.status}</span>
         </div>
@@ -1013,7 +1084,7 @@ function rerenderChartsOnThemeChange() {
     fetchInternships(); // This will call updateCharts with the new theme
 }
 
-// Filter internships based on search term
+// Filter internships based on search term (primarily by company name)
 function filterInternships(searchTerm) {
     const cards = document.querySelectorAll('.internship-card');
     cards.forEach(card => {
@@ -1021,6 +1092,8 @@ function filterInternships(searchTerm) {
         const role = card.querySelector('.role-title')?.textContent.toLowerCase() || '';
         const location = card.querySelector('.location-text')?.textContent.toLowerCase() || '';
         
+        // Primary search: company name (most important)
+        // Secondary search: role and location as fallback
         if (company.includes(searchTerm) || role.includes(searchTerm) || location.includes(searchTerm)) {
             card.style.display = 'block';
         } else {
