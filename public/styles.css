@@ -28,29 +28,49 @@ body.dark textarea {
     color: #e2e8f0; /* slate-200 */
 }
 
-/* Light mode */
+/* Light mode - Premium Design */
 body.light {
-    background-color: #f8fafc; /* slate-50 */
-    color: #1e293b; /* slate-800 */
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    color: #0f172a; /* slate-900 */
+    transition: all 0.3s ease;
+}
+
+body.light .premium-bg {
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(59,130,246,0.08) 0%, rgba(241,245,249,0) 55%),
+                radial-gradient(1000px 500px at 110% 10%, rgba(16,185,129,0.06) 0%, rgba(241,245,249,0) 60%),
+                linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+body.light .glass-panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 body.light .form-container,
 body.light .list-container,
 body.light .analytics-container {
-    background-color: rgba(241, 245, 249, 0.7); /* slate-100/70 */
-    border-color: rgba(203, 213, 225, 0.5); /* slate-300/50 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(12px);
 }
 
 body.light input,
 body.light select,
 body.light textarea {
-    background-color: #f1f5f9; /* slate-100 */
-    border-color: #cbd5e1; /* slate-300 */
-    color: #1e293b; /* slate-800 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.5);
+    color: #0f172a;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 body.light .text-slate-200 {
-    color: #1e293b; /* slate-800 */
+    color: #0f172a; /* slate-900 - darker for better contrast */
+}
+
+body.light .text-slate-300 {
+    color: #334155; /* slate-700 */
 }
 
 body.light .text-slate-400 {
@@ -62,24 +82,31 @@ body.light .text-slate-500 {
 }
 
 body.light .bg-slate-800\/50 {
-    background-color: rgba(241, 245, 249, 0.7); /* slate-100/70 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 body.light .bg-slate-900\/50 {
-    background-color: rgba(226, 232, 240, 0.7); /* slate-200/70 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
 
 body.light .border-slate-700\/50 {
-    border-color: rgba(203, 213, 225, 0.5); /* slate-300/50 */
+    border-color: rgba(203, 213, 225, 0.4);
 }
 
 /* Chart colors for light mode */
 body.light .chart-container {
-    background-color: rgba(241, 245, 249, 0.7); /* slate-100/70 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 }
 
 body.light canvas {
-    filter: brightness(0.9);
+    filter: brightness(1.1) contrast(1.05);
+    border-radius: 12px;
 }
 
 /* Theme toggle styles */
@@ -117,33 +144,7 @@ body.light canvas {
     border-color: rgba(99, 102, 241, 0.3);
 }
 
-/* Status badge colors with gradients */
-.status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.status-applied {
-    background-color: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
-}
-
-.status-interview {
-    background-color: rgba(245, 158, 11, 0.2);
-    color: #fbbf24;
-}
-
-.status-offer {
-    background-color: rgba(16, 185, 129, 0.2);
-    color: #34d399;
-}
-
-.status-rejected {
-    background-color: rgba(239, 68, 68, 0.2);
-    color: #f87171;
-}
+/* Removed status badges per request */
 
 /* Form styles */
 input, select, textarea {
@@ -197,20 +198,7 @@ button[type="submit"]:hover {
     transform: translateY(-1px);
 }
 
-/* Status select styles */
-.status-select {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    transition: all 0.2s ease;
-    color: #e2e8f0;
-}
-
-.status-select:hover {
-    border-color: #6366F1;
-    transform: translateY(-1px);
-}
+/* Removed status select styles per request */
 
 /* Empty state animation */
 @keyframes fadeIn {
@@ -234,6 +222,32 @@ header h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hero logo styles */
+.hero-logo-frame {
+    width: clamp(96px, 18vw, 168px);
+    height: clamp(96px, 18vw, 168px);
+    padding: 10px;
+    border-radius: 24px;
+    background: radial-gradient(64% 64% at 50% 36%, rgba(99,102,241,0.25) 0%, rgba(16,185,129,0.2) 40%, rgba(2,6,23,0) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: 0 12px 28px rgba(2,6,23,0.55), 0 0 0 6px rgba(99,102,241,0.08) inset;
+    display: grid;
+    place-items: center;
+}
+
+.hero-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(99,102,241,0.35));
+}
+
+body.light .hero-logo-frame {
+    background: radial-gradient(64% 64% at 50% 36%, rgba(59,130,246,0.18) 0%, rgba(16,185,129,0.14) 40%, rgba(241,245,249,0) 100%);
+    border-color: rgba(203,213,225,0.6);
+    box-shadow: 0 12px 24px rgba(148,163,184,0.25), 0 0 0 6px rgba(99,102,241,0.06) inset;
 }
 
 /* Container styles */
@@ -470,54 +484,31 @@ body.dark #settingsModal label {
 
 /* Light mode card styles */
 body.light .internship-card {
-    background: rgba(241, 245, 249, 0.7); /* slate-100/70 */
-    border-color: rgba(203, 213, 225, 0.5); /* slate-300/50 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(12px);
 }
 
 body.light .internship-card:hover {
-    border-color: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-/* Light mode status badges */
-body.light .status-badge {
-    background-color: rgba(241, 245, 249, 0.9); /* slate-100/90 */
-}
-
-body.light .status-applied {
-    background-color: rgba(99, 102, 241, 0.2);
-    color: #4f46e5; /* indigo-600 */
-}
-
-body.light .status-interview {
-    background-color: rgba(245, 158, 11, 0.2);
-    color: #d97706; /* amber-600 */
-}
-
-body.light .status-offer {
-    background-color: rgba(16, 185, 129, 0.2);
-    color: #059669; /* emerald-600 */
-}
-
-body.light .status-rejected {
-    background-color: rgba(239, 68, 68, 0.2);
-    color: #dc2626; /* red-600 */
-}
+/* Removed light mode status badges per request */
 
 /* Light mode form elements */
 body.light input:focus,
 body.light select:focus,
 body.light textarea:focus {
-    background-color: #ffffff;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.9) 100%);
     border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
 }
 
-/* Light mode status select */
-body.light .status-select {
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    border-color: #cbd5e1;
-    color: #1e293b;
-}
+/* Removed light mode status select per request */
 
 /* Light mode notes container */
 body.light .notes-container {
@@ -551,8 +542,15 @@ body.light #settingsModal span {
 
 /* Light mode platform success list */
 body.light #platformSuccessList > div {
-    background-color: rgba(241, 245, 249, 0.7);
-    border-color: rgba(203, 213, 225, 0.5);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.light #platformSuccessList > div:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateX(4px);
 }
 
 /* Light mode empty state */
@@ -566,23 +564,28 @@ body.light #emptyState p {
 
 /* Light mode header */
 body.light header h1 {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #10b981 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 body.light header p {
-    color: #64748b; /* slate-500 */
+    color: #475569; /* slate-600 - better contrast */
 }
 
 /* Light mode settings button */
 body.light #settingsButton {
-    background-color: #e2e8f0; /* slate-200 */
-    color: #1e293b; /* slate-800 */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+    color: #0f172a;
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 body.light #settingsButton:hover {
-    background-color: #cbd5e1; /* slate-300 */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.9) 100%);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 /* Light mode close button */
@@ -598,21 +601,59 @@ body.light #closeSettings:hover {
 body.light #exportCsv {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     color: #ffffff;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+body.light #exportCsv:hover {
+    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
+    transform: translateY(-1px);
 }
 
 /* Light mode delete button */
 body.light .delete-btn {
     color: #64748b; /* slate-500 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 body.light .delete-btn:hover {
     color: #dc2626; /* red-600 */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+    transform: translateY(-1px);
 }
 
-/* Light mode status select hover */
-body.light .status-select:hover {
-    border-color: #6366f1;
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+/* Light mode status badges */
+body.light .status-badge {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-weight: 600;
+}
+
+body.light .status-applied {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(14, 165, 233, 0.08) 100%);
+    color: #1e40af;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+body.light .status-interview {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 179, 8, 0.08) 100%);
+    color: #d97706;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+body.light .status-offer {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.08) 100%);
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+body.light .status-rejected {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(244, 63, 94, 0.08) 100%);
+    color: #dc2626;
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 /* Light mode chart text colors */
@@ -627,25 +668,7 @@ body.light #monthlySummary {
     border-color: rgba(203, 213, 225, 0.5);
 }
 
-/* Light mode status categories */
-body.light .status-categories-container {
-    background-color: rgba(241, 245, 249, 0.7);
-    border-color: rgba(203, 213, 225, 0.5);
-}
-
-body.light .status-categories-container h2,
-body.light .status-categories-container h3 {
-    color: #1e293b; /* slate-800 */
-}
-
-body.light .status-categories-container .company-card {
-    background-color: rgba(241, 245, 249, 0.9);
-    border-color: rgba(203, 213, 225, 0.5);
-}
-
-body.light .status-categories-container .company-card p {
-    color: #1e293b; /* slate-800 */
-}
+/* Removed light mode status categories per request */
 
 /* Monthly summary box inside chart container */
 #monthlySummary {
@@ -750,8 +773,8 @@ body.light .tab-button:not(.active):hover {
 
 /* Recent Applications Styles */
 #recentApplications {
-    max-height: 400px;
-    overflow-y: auto;
+    max-height: none;
+    overflow: visible;
 }
 
 .recent-application-item {
@@ -770,13 +793,16 @@ body.light .tab-button:not(.active):hover {
 }
 
 body.light .recent-application-item {
-    background-color: rgba(241, 245, 249, 0.5);
-    border-color: rgba(203, 213, 225, 0.5);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 body.light .recent-application-item:hover {
-    background-color: rgba(241, 245, 249, 0.7);
-    border-color: rgba(99, 102, 241, 0.3);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateX(4px);
 }
 
 /* Dashboard form styles */
